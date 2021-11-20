@@ -67,8 +67,67 @@ class RouterHelper {
 
 		$stmt= $this->db->prepare("SELECT * FROM `app_user` WHERE id=?");
 		$stmt->execute([$rq['id']]);
-		return ['data' => $stmt->fetchAll()];
 
+		$item = $stmt->fetchAll();
+
+		if (count($item) > 0){
+			return ['data' => $item[0]];
+		}
+	}
+
+	public function apartmentsGet(){
+
+		$stmt = $this->db->prepare("SELECT * FROM apartment"); 
+		$stmt->execute();
+
+		// set the resulting array to associative
+		$result = $stmt->setFetchMode(\PDO::FETCH_ASSOC); 
+		$resultArray = [];
+		foreach(new \RecursiveArrayIterator($stmt->fetchAll()) as $k=>$v) { 
+			$resultArray[] = $v;
+		}
+
+		return ['status' => 1 , 'data' => $resultArray];
+	}
+
+	public function apartmentGet($rq){
+		if (!isset($rq['id'])){
+			return [
+				'status' => 0,
+				'error' => 'Apartment not found'
+			]; 
+		}
+
+		$stmt= $this->db->prepare("SELECT * FROM `apartment` WHERE id=?");
+		$stmt->execute([$rq['id']]);
+		$item = $stmt->fetchAll();
+
+		if (count($item) > 0){
+			return ['data' => $item[0]];
+		}
+	}
+
+	public function userApartmentGet($rq){
+		if (!isset($rq['id'])){
+			return [
+				'status' => 0,
+				'error' => 'Apartment not found'
+			]; 
+		}
+
+		$stmt= $this->db->prepare(
+			"
+			SELECT `apartment`* 
+			FROM `apartment` 
+			LEFT JOIN 
+			WHERE `apartment`.`id`=?"
+		);
+		$stmt->execute([$rq['id']]);
+		$item = $stmt->fetchAll();
+
+		if (count($item) > 0){
+			return ['data' => $item[0]];
+		}
 	}
 
 }
