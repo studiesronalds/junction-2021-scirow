@@ -1,12 +1,12 @@
 version: '2'
 services:
-    web:
+    laravel:
         image: shivergard/docker-webserver
         ports:
             - 5500:80
             - 5586:86
         volumes:
-            - ./web:/var/www
+            - ./laravel:/var/www
     pandas:
         build: ./build/pandas
         volumes:
