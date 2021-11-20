@@ -151,21 +151,286 @@ class RouterHelper {
 		}
 
 		$stmt= $this->db->prepare(
-			"SELECT `sustainability_daily`.* 
-				FROM `sustainability_daily` 
+			'SELECT 
+				`sustainability_daily`.index , 
+				DATE_FORMAT(sustainability_daily.created_at, "%Y-%m-%d") as date 
+			FROM `sustainability_daily` 
 			LEFT JOIN app_user ON app_user.apartment_id = sustainability_daily.apartment_id
-				WHERE `app_user`.`id`=?"
+				WHERE `app_user`.`id`=?
+			ORDER BY sustainability_daily.created_at DESC 
+			LIMIT 50'
 		);
 		$stmt->execute([$user_id]);
 		$item = $stmt->fetchAll();
 
+		return ['data' => $item];
+	}
 
-		$data = [];
-		// live sustainability index
-		$data['index'] = 25;
-		// last 30 days sustaimability index canculations
-		$data['index'] = ['2021-11-19' => ['index' => 80], '2021-11-18' => ['index' => 70], '2021-11-17' => ['index' => 50], '2021-11-16' => ['index' => 50], '2021-11-15' => ['index' => 10]];
+	public function leadershipGet($rq){
+		if (!isset($rq['token'])){
+			return [
+				'status' => 0,
+				'error' => 'User not authenticated'
+			]; 
+		}
 
-		return ['data' => $data];
+		// TODO properly authenticate user
+		$user_id;
+		if($rq['token'] == 'vdfvdd8n372xfgenixugesxdnwehjsdbw') $user_id = 1;
+
+		if (!isset($user_id)){
+			return [
+				'status' => 0,
+				'error' => 'User not authenticated'
+			]; 
+		}
+?><!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Leader Board using HTML CSS and Javascript</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="wrapper">
+	<div class="lboard_section">
+		<div class="lboard_tabs">
+			<div class="tabs">
+				<ul>
+					<li data-li="today">Today</li>
+					<li class="active" data-li="month">Month</li>
+					<li data-li="year">Year</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="lboard_wrap">
+			<div class="lboard_item today" style="display: none;">
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_1.png" alt="picture_1">
+					</div>
+					<div class="name_bar">
+						<p><span>1.</span> Charles John</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 95%"></div>
+						</div>
+					</div>
+					<div class="points">
+						195 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_2.png" alt="picture_2">
+					</div>
+					<div class="name_bar">
+						<p><span>2.</span>Alex Mike</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 80%"></div>
+						</div>
+					</div>
+					<div class="points">
+						185 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_3.png" alt="picture_2">
+					</div>
+					<div class="name_bar">
+						<p><span>3.</span>Johnson</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 60%;"></div>
+						</div>
+					</div>
+					<div class="points">
+						160 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_4.png" alt="picture_1">
+					</div>
+					<div class="name_bar">
+						<p><span>4.</span>Rosey</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 30%"></div>
+						</div>
+					</div>
+					<div class="points">
+						130 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_5.png" alt="picture_2">
+					</div>
+					<div class="name_bar">
+						<p><span>5.</span>Scarlett Angela</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 10%"></div>
+						</div>
+					</div>
+					<div class="points">
+						110 points
+					</div>
+				</div>
+			</div>
+			<div class="lboard_item month" style="display: block;">
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_2.png" alt="picture_2">
+					</div>
+					<div class="name_bar">
+						<p><span>1.</span> Alex Mike</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 95%"></div>
+						</div>
+					</div>
+					<div class="points">
+						1195 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_3.png" alt="picture_3">
+					</div>
+					<div class="name_bar">
+						<p><span>2.</span>Johnson</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 80%"></div>
+						</div>
+					</div>
+					<div class="points">
+						1185 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_1.png" alt="picture_1">
+					</div>
+					<div class="name_bar">
+						<p><span>3.</span>Charles John</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 70%;"></div>
+						</div>
+					</div>
+					<div class="points">
+						1160 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_5.png" alt="picture_5">
+					</div>
+					<div class="name_bar">
+						<p><span>4.</span>Scarlett Angela</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 50%"></div>
+						</div>
+					</div>
+					<div class="points">
+						1130 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_4.png" alt="picture_4">
+					</div>
+					<div class="name_bar">
+						<p><span>5.</span>Rosey</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 30%"></div>
+						</div>
+					</div>
+					<div class="points">
+						1110 points
+					</div>
+				</div>
+			</div>
+			<div class="lboard_item year" style="display: none;">
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_5.png" alt="picture_5">
+					</div>
+					<div class="name_bar">
+						<p><span>1.</span>Scarlett Angela</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 90%"></div>
+						</div>
+					</div>
+					<div class="points">
+						2195 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_4.png" alt="picture_4">
+					</div>
+					<div class="name_bar">
+						<p><span>2.</span>Rosey</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 85%"></div>
+						</div>
+					</div>
+					<div class="points">
+						2185 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_3.png" alt="picture_3">
+					</div>
+					<div class="name_bar">
+						<p><span>3.</span>Johnson</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 65%;"></div>
+						</div>
+					</div>
+					<div class="points">
+						2160 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_1.png" alt="picture_1">
+					</div>
+					<div class="name_bar">
+						<p><span>4.</span>Charles John</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 30%"></div>
+						</div>
+					</div>
+					<div class="points">
+						2130 points
+					</div>
+				</div>
+				<div class="lboard_mem">
+					<div class="img">
+						<img src="pic_2.png" alt="picture_2">
+					</div>
+					<div class="name_bar">
+						<p><span>5.</span>Alex Mike</p>
+						<div class="bar_wrap">
+							<div class="inner_bar" style="width: 10%"></div>
+						</div>
+					</div>
+					<div class="points">
+						2110 points
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+<script src="scripts.js"></script>
+</body>
+</html>
+<?php
+
+
 	}
 }
