@@ -58,7 +58,9 @@ class ExtractOrasDatabase extends Command
         Apartament::truncate();
         Measurement::truncate();
 
-        $files = scandir(storage_path('to_migrate'));
+        $pathName = 'migrate_2';
+
+        $files = scandir(storage_path($pathName));
 
         $house = new House();
         $house->save();
@@ -91,7 +93,7 @@ class ExtractOrasDatabase extends Command
             $type = str_replace('.csv' , '' , $type);
 
 
-            $handle = fopen(storage_path('to_migrate/' . $file), "r");
+            $handle = fopen(storage_path($pathName . '/' . $file), "r");
             if ($handle) {
                 while (($line = fgets($handle)) !== false) {
                     // process the line read.
