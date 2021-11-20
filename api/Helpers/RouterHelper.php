@@ -163,7 +163,10 @@ class RouterHelper {
 		$stmt->execute([$user_id]);
 		$item = $stmt->fetchAll();
 
-		return ['data' => $item];
+		return [
+			'data' => $item,
+			'status' => 1
+		];
 	}
 
 	public function leadershipGet($rq){

@@ -12,7 +12,7 @@ services:
         build: ./build/pandas
         volumes:
             - ./storage:/opt/storage
-            - ./:/opt/project
+            - ./pandas:/opt/project
         command: tail -f /dev/null
         env_file:
             - ./laravel/.env
