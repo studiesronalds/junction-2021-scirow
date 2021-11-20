@@ -150,6 +150,16 @@ class RouterHelper {
 			]; 
 		}
 
+		$stmt= $this->db->prepare(
+			"SELECT `sustainability_daily`.* 
+				FROM `sustainability_daily` 
+			LEFT JOIN app_user ON app_user.apartment_id = sustainability_daily.apartment_id
+				WHERE `app_user`.`id`=?"
+		);
+		$stmt->execute([$user_id]);
+		$item = $stmt->fetchAll();
+
+
 		$data = [];
 		// live sustainability index
 		$data['index'] = 25;
