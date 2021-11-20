@@ -1,4 +1,7 @@
 <?php
+
+header('Access-Control-Allow-Origin: *'); 
+
 //init and define and setup
 $output = ['status' => "Balozhi ir skudras"];
 
