@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.scirow.">
+
+<!--    <ImageView-->
+<!--        android:id="@+id/icon"-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:visibility="gone"-->
+<!--        android:src="@drawable/p1"-->
+<!--        android:scaleType="fitCenter" />-->
+<!--    -->
+    <TextView
+        android:id="@+id/icon"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"
+        android:textSize="24dp"
+        android:text="⚠️"
+        android:scaleType="fitStart" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_toRightOf="@id/icon"
+        android:layout_toLeftOf="@id/action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_centerInParent="true"
+        android:gravity="center|left"
+        android:textStyle="bold"
+        android:color="@color/black"
+        android:text="Unusual activity detected in kitchen faucet. Too large consumption."
+         />
+
+    <TextView
+        android:id="@+id/action"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_width="64dp"
+        android:layout_height="24dp"
+        android:textColor="@color/white"
+        android:visibility="visible"
+        android:gravity="center"
+        android:text="@string/view"
+        android:paddingBottom="2dp"
+        android:background="@drawable/des_not_btn"
+        android:src="@drawable/ic_warning"
+        android:scaleType="fitCenter" />
+</RelativeLayout>

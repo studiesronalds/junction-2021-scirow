@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Scirow</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">My Devices</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="view">View</string>
+</resources>
