@@ -131,6 +131,71 @@ class RouterHelper {
 		}
 	}
 
+
+	public function typeStatsGet($rq){
+		if (!isset($rq['token'])){
+			return [
+				'status' => 0,
+				'error' => 'User not authenticated'
+			]; 
+		}
+
+		// TODO properly authenticate user
+		$user_id;
+		if($rq['token'] == 'vdfvdd8n372xfgenixugesxdnwehjsdbw') $user_id = 1;
+
+		if (!isset($user_id)){
+			return [
+				'status' => 0,
+				'error' => 'User not authenticated'
+			]; 
+		}
+
+		if (!isset($rq['type'])){
+			return [
+				'status' => 0,
+				'error' => 'Type not set '
+			]; 
+		}
+
+		//@to wrong as possible wrong - as indexes are generates similary works , but merged by main key... what is wrong-wrong @fix @fix @fix
+		$stmt= $this->db->prepare(
+			'select 
+				ia.type,
+				ia.apartment_id,
+				ia.consumption as average_cons,
+				imx.consumption as max_cons,
+				imx.temp as max_temp,
+				imx.flow_time as max_flow_time,
+				imn.consumption as min_cons,
+				imn.temp as min_temp,
+				imn.flow_time as min_flow_time,
+				itm.consumption as times_cons,
+				itm.temp as times_temp,
+				itm.flow_time as times_flow_time
+				from index_average AS ia
+				left join index_max as imx ON imx.id = ia.id
+				left join index_min as imn ON imn.id = ia.id
+				left join index_most_times as itm ON itm.id = ia.id
+				left join app_user as au on au.apartment_id = ia.apartment_id
+				where au.id = ?
+				and ia.type = ?
+				order by ia.id desc
+				limit 30;
+		'
+		);
+		$stmt->execute([$user_id, $rq['type']]);
+		$item = $stmt->fetchAll();
+
+		return [
+			'data' => $item,
+			'status' => 1
+		];
+
+	}
+
+
+
 	public function statsGet($rq){
 		if (!isset($rq['token'])){
 			return [

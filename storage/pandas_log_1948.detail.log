@@ -1,0 +1,176 @@
+Python 3.9.4 (default, Apr 10 2021, 15:31:19) 
+[GCC 8.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pandas
+>>> from sqlalchemy import create_engine
+>>> import pymysql
+>>> import os
+>>> hostname = os.environ['DB_HOST']
+>>> database = os.environ['DB_DATABASE']
+>>> username= os.environ['DB_USERNAME']
+>>> password= os.environ['DB_PASSWORD']
+>>> sqlEngine = create_engine('mysql+pymysql://' + username + ':' + password + '@' + hostname + ':3306', pool_recycle=20334)
+>>> dbConnection = sqlEngine.connect()
+>>> df = pandas.read_sql("SELECT * , MONTH(created_at) as month, CONCAT(MONTH(created_at), YEAR(created_at)) as monthyear , CONCAT(MONTH(created_at), YEAR(created_at), DAY(created_at)) as monthyearday  FROM " + database + ".measurement", sqlEngine)
+>>> pandas.set_option('display.max_rows', None)
+>>> mincollection = df[['consumption','temp', 'flow_time', 'type','apartment_id', 'monthyearday']].groupby(['apartment_id','monthyearday', 'type']).min()
+>>> maxcollection = df[['consumption','temp', 'flow_time', 'type','apartment_id', 'monthyearday']].groupby(['apartment_id','monthyearday', 'type']).max()
+>>> averagecollection = df[['consumption','temp', 'flow_time', 'type','apartment_id', 'monthyearday']].groupby(['apartment_id','monthyearday', 'type']).mean()
+>>> mincollection.head(5)
+                                                 consumption       temp  flow_time
+apartment_id monthyearday type                                                    
+1            1020201      Dishwasher                      15         60      10800
+                          Hydractiva_shower                7   37.24916  104.67144
+                          Kitchen_optima_faucet            1  10.262425  100.32314
+                          Optima_faucet                    1  11.179666  10.894295
+                          Washing_machine                 40         20      10800
+>>> totalcollection = df[['consumption','temp', 'flow_time', 'type','apartment_id', 'monthyearday']].groupby(['apartment_id','monthyearday', 'type']).sum()
+>>> totalcollection.head(5)
+                                                 consumption
+apartment_id monthyearday type                              
+1            1020201      Dishwasher                      30
+                          Hydractiva_shower              122
+                          Kitchen_optima_faucet          107
+                          Optima_faucet                  137
+                          Washing_machine                100
+>>> countCollection = df[['consumption','temp', 'flow_time', 'type','apartment_id', 'monthyearday']].groupby(['apartment_id','monthyearday', 'type']).count()
+>>> countCollection.head(5)
+                                                 consumption  temp  flow_time
+apartment_id monthyearday type                                               
+1            1020201      Dishwasher                       2     2          2
+                          Hydractiva_shower                6     6          6
+                          Kitchen_optima_faucet           25    25         25
+                          Optima_faucet                   26    26         26
+                          Washing_machine                  2     2          2
+>>> mostTimesDishWasher = countCollection.where(type = 'Dishwasher').max()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: where() got an unexpected keyword argument 'type'
+>>> filterMostTimesDisWasher = countCollection["type"] == "Dishwasher"
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3080, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 70, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 101, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 4554, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 4562, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'type'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/frame.py", line 3024, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 3082, in get_loc
+    raise KeyError(key) from err
+KeyError: 'type'
+>>> print('Wrong approach - will try to sort values before that')
+Wrong approach - will try to sort values before that
+>>> sortedMostTimesDishWasher = countCollection.s
+countCollection.sample(         countCollection.sort_values(
+countCollection.select_dtypes(  countCollection.sparse
+countCollection.sem(            countCollection.squeeze(
+countCollection.set_axis(       countCollection.stack(
+countCollection.set_flags(      countCollection.std(
+countCollection.set_index(      countCollection.style
+countCollection.shape           countCollection.sub(
+countCollection.shift(          countCollection.subtract(
+countCollection.size            countCollection.sum(
+countCollection.skew(           countCollection.swapaxes(
+countCollection.slice_shift(    countCollection.swaplevel(
+countCollection.sort_index(     
+>>> sortedMostTimesDishWasher = countCollection.s
+countCollection.sample(         countCollection.sort_values(
+countCollection.select_dtypes(  countCollection.sparse
+countCollection.sem(            countCollection.squeeze(
+countCollection.set_axis(       countCollection.stack(
+countCollection.set_flags(      countCollection.std(
+countCollection.set_index(      countCollection.style
+countCollection.shape           countCollection.sub(
+countCollection.shift(          countCollection.subtract(
+countCollection.size            countCollection.sum(
+countCollection.skew(           countCollection.swapaxes(
+countCollection.slice_shift(    countCollection.swaplevel(
+countCollection.sort_index(     
+>>> sortedMostTimesDishWasher = countCollection.sort_
+countCollection.sort_index(   countCollection.sort_values(
+>>> sortedMostTimesDishWasher = countCollection.sort_values("consumption", inplace = True)
+>>> filter = sortedMostTimesDishWasher["type"]=="Dishwasher"
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'NoneType' object is not subscriptable
+>>> sortedMostTimesDishWasher = countCollection.sort_values("type", inplace = True)
+>>> filter = sortedMostTimesDishWasher["type"]=="Dishwasher"Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'NoneType' object is not subscriptable
+>>> filter = sortedMostTimesDishWasher["type"]=="Dishwasher"
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'NoneType' object is not subscriptable
+>>> sortedMostTimesDishWasher.where
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'NoneType' object has no attribute 'where'
+>>> sortedMostTimesDishWasher = countCollection.sort_values("type", inplace = True)
+>>> print(sortedMostTimesDishWasher)
+None
+>>> countCollection.head(5)
+                                      consumption  temp  flow_time
+apartment_id monthyearday type                                    
+8            1220202      Dishwasher            1     1          1
+7            5202023      Dishwasher            2     2          2
+1            1202013      Dishwasher            2     2          2
+3            8202024      Dishwasher            2     2          2
+7            7202015      Dishwasher            2     2          2
+>>> sortedMostTimesDishWasher = countCollection.sort_values("type")>>> print(sortedMostTimesDishWasher)^CTraceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/frame.py", line 803, in __repr__
+    self.to_string(
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/frame.py", line 939, in to_string
+    return fmt.DataFrameRenderer(formatter).to_string(
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 1031, in to_string
+    string = string_formatter.to_string()
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/string.py", line 23, in to_string
+    text = self._get_string_representation()
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/string.py", line 47, in _get_string_representation
+    return self._fit_strcols_to_terminal_width(strcols)
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/string.py", line 180, in _fit_strcols_to_terminal_width
+    strcols = self._get_strcols()
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/string.py", line 29, in _get_strcols
+    strcols = self.fmt.get_strcols()
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 522, in get_strcols
+    str_index = self._get_formatted_index(self.tr_frame)
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 871, in _get_formatted_index
+    fmt_index = index.format(
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/indexes/multi.py", line 1339, in format
+    formatted = lev.take(level_codes).format(formatter=formatter)
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 978, in format
+    return self._format_with_header(header, na_rep=na_rep)
+  File "/usr/local/lib/python3.9/site-packages/pandas/core/indexes/base.py", line 1000, in _format_with_header
+    result = trim_front(format_array(values, None, justify="left"))
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 1218, in format_array
+    return fmt_obj.get_result()
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 1249, in get_result
+    fmt_values = self._format_strings()
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 1504, in _format_strings
+    fmt_values = [formatter(x) for x in self.values]
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 1504, in <listcomp>
+    fmt_values = [formatter(x) for x in self.values]
+  File "/usr/local/lib/python3.9/site-packages/pandas/io/formats/format.py", line 1502, in <lambda>
+    formatter_str = lambda x: f"{x: d}".format(x=x)
+KeyboardInterrupt
+>>> sortedMostTimesDishWasher.head(5)
+                                      consumption  temp  flow_time
+apartment_id monthyearday type                                    
+8            1220202      Dishwasher            1     1          1
+9            10202016     Dishwasher            1     1          1
+13           7202012      Dishwasher            3     3          3
+8            9202025      Dishwasher            1     1          1
+2            3202020      Dishwasher            1     1          1
+>>> print(sortedMostTimesDishWasher)
+
+>>> sortedMostTimesDishWasher.to_csv('/opt/storage/index_most_times.csv')
+>>> mincollection.to_csv('/opt/storage/index_min.csv')
+>>> maxcollection.to_csv('/opt/storage/index_max.csv')
+>>> averagecollection.to_csv('/opt/storage/index_average.csv')

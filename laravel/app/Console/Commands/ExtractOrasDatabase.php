@@ -60,7 +60,7 @@ class ExtractOrasDatabase extends Command
         // Apartament::truncate();
         // Measurement::truncate();
 
-        $pathName = 'migrate_2';
+        $pathName = 'to_migrate';
 
         $files = scandir(storage_path($pathName));
 
@@ -133,14 +133,18 @@ class ExtractOrasDatabase extends Command
                         }
                     **/
 
-                    if ('TimeStamp' == trim($measurementData[5])){
+                    // if (!isset($measurementData[5]){
+
+                    // }
+
+                    if (isset($measurementData[5]) && 'TimeStamp' == trim($measurementData[5])){
                         continue;
                     }
 
                     $measurement = new Measurement();
                     $measurement->type = $type;
                     $measurement->apartment_id = $aparmentModel->id;
-                    $measurement->consumption = (double) $measurementData[1];
+                    $measurement->consumption = $measurementData[1];
                     $measurement->temp = (double) $measurementData[2];
                     $measurement->flow_time = (double) $measurementData[3];
                     $measurement->power_consumption = (double) $measurementData[4];
