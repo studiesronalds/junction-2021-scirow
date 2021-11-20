@@ -7,17 +7,12 @@ services:
             - 5586:86
         volumes:
             - ./laravel:/var/www
+            - ./storage:/var/www/storage
     pandas:
         build: ./build/pandas
         volumes:
-            - ./:/opt/storage
-        command: tail -f /dev/null
-    city_runner:
-        build: ./build/city_runner
-        volumes:
             - ./storage:/opt/storage
-        ports:
-            - 8050:8080
-        restart: always
+            - ./:/opt/project
+        command: tail -f /dev/null
         env_file:
-            - ./.env
+            - ./laravel/.env

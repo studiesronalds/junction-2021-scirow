@@ -1,0 +1,11 @@
+version: '2'
+services:
+    city_runner:
+        build: ./build/city_runner
+        volumes:
+            - ./storage:/opt/storage
+        ports:
+            - 8050:8080
+        restart: always
+        env_file:
+            - ./.env

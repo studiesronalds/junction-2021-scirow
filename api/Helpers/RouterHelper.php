@@ -108,21 +108,22 @@ class RouterHelper {
 	}
 
 	public function userApartmentGet($rq){
-		if (!isset($rq['id'])){
+		if (!isset($rq['access_key'])){
 			return [
 				'status' => 0,
-				'error' => 'Apartment not found'
+				'error' => 'Access Key not provided'
 			]; 
 		}
 
 		$stmt= $this->db->prepare(
 			"
-			SELECT `apartment`* 
-			FROM `apartment` 
-			LEFT JOIN 
-			WHERE `apartment`.`id`=?"
+				SELECT `apartment`.* 
+				FROM `apartment` 
+				LEFT JOIN app_user ON app_user.apartment_id = apartment.id
+				WHERE `app_user`.`access_key`=?
+			"
 		);
-		$stmt->execute([$rq['id']]);
+		$stmt->execute([$rq['access_key']]);
 		$item = $stmt->fetchAll();
 
 		if (count($item) > 0){
@@ -130,4 +131,31 @@ class RouterHelper {
 		}
 	}
 
+	public function statsGet($rq){
+		if (!isset($rq['token'])){
+			return [
+				'status' => 0,
+				'error' => 'User not authenticated'
+			]; 
+		}
+
+		// TODO properly authenticate user
+		$user_id;
+		if($rq['token'] == 'vdfvdd8n372xfgenixugesxdnwehjsdbw') $user_id = 1;
+
+		if (!isset($user_id)){
+			return [
+				'status' => 0,
+				'error' => 'User not authenticated'
+			]; 
+		}
+
+		$data = [];
+		// live sustainability index
+		$data['index'] = 25;
+		// last 30 days sustaimability index canculations
+		$data['index'] = ['2021-11-19' => ['index' => 80], '2021-11-18' => ['index' => 70], '2021-11-17' => ['index' => 50], '2021-11-16' => ['index' => 50], '2021-11-15' => ['index' => 10]];
+
+		return ['data' => $data];
+	}
 }
