@@ -1,0 +1,14 @@
+version: '2'
+services:
+    web:
+        image: shivergard/docker-webserver
+        ports:
+            - 5500:80
+            - 5586:86
+        volumes:
+            - ./web:/var/www
+    pandas:
+        build: ./build/pandas
+        volumes:
+            - ./:/opt/storage
+        command: tail -f /dev/null
