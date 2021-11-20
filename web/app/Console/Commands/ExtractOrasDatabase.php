@@ -54,9 +54,11 @@ class ExtractOrasDatabase extends Command
         // foreach ($houses as $house) {
         //     dd($house);
         // }
-        House::truncate();
-        Apartament::truncate();
-        Measurement::truncate();
+
+        
+        // House::truncate();
+        // Apartament::truncate();
+        // Measurement::truncate();
 
         $pathName = 'migrate_2';
 
